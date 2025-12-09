@@ -135,10 +135,10 @@
     <div class="login-box">
         <img src="logo.svg" alt="DOME Logo">
         <h1>DOME Simulator</h1>
-        <p>Entrez votre code d'accès pour continuer</p>
-        <input type="password" id="password-input" placeholder="Code d'accès" autocomplete="off">
-        <button onclick="checkAccess()">Accéder au simulateur</button>
-        <div class="login-error" id="login-error">Code d'accès invalide</div>
+        <p>Enter your access code to continue</p>
+        <input type="password" id="password-input" placeholder="Access code" autocomplete="off">
+        <button onclick="checkAccess()">Access Simulator</button>
+        <div class="login-error" id="login-error">Invalid access code</div>
         <div class="org-badge" id="org-badge"></div>
     </div>
 </div>
@@ -230,7 +230,7 @@
 
         // Désactiver le bouton pendant la requête
         button.disabled = true;
-        button.textContent = 'Vérification...';
+        button.textContent = 'Verifying...';
 
         try {
             const response = await fetch('/api/auth', {
@@ -256,11 +256,11 @@
                 input.focus();
             }
         } catch (err) {
-            error.textContent = 'Erreur de connexion';
+            error.textContent = 'Connection error';
             error.classList.add('show');
         } finally {
             button.disabled = false;
-            button.textContent = 'Accéder au simulateur';
+            button.textContent = 'Access Simulator';
         }
     }
 
