@@ -20,5 +20,8 @@
   ],
   "author": "Polypus Holding",
   "license": "UNLICENSED",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@vercel/analytics": "^1.6.1"
+  }
 }
