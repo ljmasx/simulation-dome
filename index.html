@@ -212,39 +212,55 @@
 </div>
 
 <script>
-    // --- AUTHENTICATION SYSTEM ---
-    const ACCESS_CODES = {
-        'fujifilm-mgates2026': 'Fujifilm',
-        'hcl-lyon2026': 'HCL Lyon',
-        'microtech-mgates2026': 'Microtech'
-    };
-
+    // --- AUTHENTICATION SYSTEM (via Vercel API) ---
     // Vérifier si déjà authentifié
     const savedSession = sessionStorage.getItem('dome-auth');
     if (savedSession) {
         document.getElementById('login-screen').classList.add('hidden');
     }
 
-    function checkAccess() {
+    async function checkAccess() {
         const input = document.getElementById('password-input');
         const error = document.getElementById('login-error');
         const badge = document.getElementById('org-badge');
+        const button = document.querySelector('.login-box button');
         const password = input.value.trim();
 
-        if (ACCESS_CODES[password]) {
-            const org = ACCESS_CODES[password];
-            sessionStorage.setItem('dome-auth', org);
-            badge.textContent = org;
-            badge.classList.add('show');
-            error.classList.remove('show');
+        if (!password) return;
 
-            setTimeout(() => {
-                document.getElementById('login-screen').classList.add('hidden');
-            }, 800);
-        } else {
+        // Désactiver le bouton pendant la requête
+        button.disabled = true;
+        button.textContent = 'Vérification...';
+
+        try {
+            const response = await fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                sessionStorage.setItem('dome-auth', data.organization);
+                badge.textContent = data.organization;
+                badge.classList.add('show');
+                error.classList.remove('show');
+
+                setTimeout(() => {
+                    document.getElementById('login-screen').classList.add('hidden');
+                }, 800);
+            } else {
+                error.classList.add('show');
+                input.value = '';
+                input.focus();
+            }
+        } catch (err) {
+            error.textContent = 'Erreur de connexion';
             error.classList.add('show');
-            input.value = '';
-            input.focus();
+        } finally {
+            button.disabled = false;
+            button.textContent = 'Accéder au simulateur';
         }
     }
 
