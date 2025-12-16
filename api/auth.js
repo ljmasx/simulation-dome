@@ -23,7 +23,8 @@ export default function handler(req, res) {
     const accessCodes = {
         [process.env.CODE_FUJIFILM]: 'Fujifilm',
         [process.env.CODE_HCL]: 'HCL Lyon',
-        [process.env.CODE_MICROTECH]: 'Microtech'
+        [process.env.CODE_MICROTECH]: 'Microtech',
+        [process.env.CODE_HEALTH_EMEA]: 'Health EMEA'
     };
 
     const org = accessCodes[password];
